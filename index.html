@@ -274,44 +274,49 @@
     
         If you need any more information, contact us at 0701840527 (Dineth Gunawardana - Director of Operations).
         `;
-    
+        let chatMemory = []; // To store user questions and bot responses during the session
         const chatBody = document.getElementById("chat-body");
         const userInput = document.getElementById("user-input");
         const sendButton = document.getElementById("send-button");
-    
-        // Append message to chat
+
         const addMessage = (content, sender, isHTML = false) => {
             const messageDiv = document.createElement("div");
             messageDiv.classList.add("message", sender);
-    
+
             const avatar = document.createElement("img");
             avatar.classList.add("avatar");
             avatar.src = sender === "user" ? "./img/user.png" : "./img/club.png";
-    
+
             const text = document.createElement("div");
             text.classList.add("text");
-    
+
             if (isHTML) {
                 text.innerHTML = content; // Insert HTML content
             } else {
                 text.textContent = content; // Insert plain text content
             }
-    
+
             messageDiv.appendChild(avatar);
             messageDiv.appendChild(text);
-    
+
             chatBody.appendChild(messageDiv);
             chatBody.scrollTop = chatBody.scrollHeight; // Scroll to the latest message
         };
-    
-        // Fetch Response from API
+
         const fetchResponse = async (message) => {
             try {
+                const memoryText = chatMemory.map(
+                    (entry, index) => `Q${index + 1}: ${entry.question}\nA${index + 1}: ${entry.answer}`
+                ).join("\n\n");
+
                 const prompt = `
-                You are an AI assistant answering questions specifically about the Mahanama College ICT Society (MCICTS).
-                Use the following memory for reference when answering questions:
+                You are an AI assistant answering questions about the Mahanama College ICT Society (MCICTS).
+                Use the following memory for reference:
                 ${CLUB_MEMORY}
-    
+                
+                Previous chat memory:
+                ${memoryText}
+
                 User: ${message}
                 AI:
                 `;
@@ -325,48 +330,42 @@
                         }]
                     }),
                 });
-    
+
                 const data = await response.json();
                 if (!response.ok) throw new Error(data.error.message);
-    
+
                 let botMessage = data?.candidates[0]?.content?.parts[0]?.text || "No response.";
-    
-                // Process bold text (wrapped in **)
+
                 botMessage = botMessage.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-    
-                // Process links (URL pattern)
                 botMessage = botMessage.replace(/https?:\/\/[^\s]+/g, (url) => `<a href="${url}" target="_blank" style="color: white;">${url}</a>`);
-    
+
+                chatMemory.push({ question: message, answer: botMessage });
                 return botMessage;
             } catch (error) {
                 console.error(error);
                 return "Sorry, something went wrong. Please try again later.";
             }
         };
-    
-        // Handle user message submission
+
         const handleUserMessage = async () => {
             const message = userInput.value.trim();
             if (!message) return;
-    
-            addMessage(message, "user"); // Add user message
-            userInput.value = ""; // Clear input
-    
-            addMessage("Typing...", "bot"); // Show typing indicator
+
+            addMessage(message, "user");
+            userInput.value = "";
+
+            addMessage("Typing...", "bot");
             const botMessage = await fetchResponse(message);
-            chatBody.lastChild.remove(); // Remove typing indicator
-    
-            // Add bot response with HTML content
-            addMessage(botMessage, "bot", true); // The third argument specifies to render HTML
+            chatBody.lastChild.remove();
+
+            addMessage(botMessage, "bot", true);
         };
-    
-        // Send sample message function
+
         const sendSampleMessage = (message) => {
             userInput.value = message;
             handleUserMessage();
         };
-    
-        // Event listeners
+
         sendButton.addEventListener("click", handleUserMessage);
         userInput.addEventListener("keypress", (e) => {
             if (e.key === "Enter") handleUserMessage();
