@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MCICTS AI</title>
+  <style>
+    /* Reset */
+    body, html {
+      margin: 0;
+      padding: 0;
+      font-family: 'Arial', sans-serif;
+      overflow-x: hidden;
+    }
+
+    /* Container */
+    .container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background: linear-gradient(135deg, #000428, #004e92);
+      color: #fff;
+      text-align: center;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    /* Title */
+    .title {
+      font-size: 3rem;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      animation: fadeIn 2s ease-in-out;
+    }
+
+    /* Subtitle */
+    .subtitle {
+      font-size: 1.2rem;
+      margin-top: -10px;
+      animation: slideUp 2s ease-in-out;
+    }
+
+    /* Button */
+    .start-btn {
+      display: inline-block;
+      padding: 15px 30px;
+      font-size: 1.2rem;
+      color: #000;
+      background: #fecd1a;
+      text-decoration: none;
+      border-radius: 30px;
+      box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+      font-weight: bold;
+      transition: transform 0.3s, box-shadow 0.3s;
+      animation: zoomIn 2s ease-in-out;
+    }
+
+    .start-btn:hover {
+      transform: scale(1.1);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+    }
+
+    /* Animation */
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+
+    @keyframes slideUp {
+      from {
+        transform: translateY(30px);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    @keyframes zoomIn {
+      from {
+        transform: scale(0.8);
+        opacity: 0;
+      }
+      to {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    /* Mobile Responsiveness */
+    @media (max-width: 768px) {
+      .title {
+        font-size: 2rem;
+      }
+
+      .subtitle {
+        font-size: 1rem;
+      }
+
+      .start-btn {
+        font-size: 1rem;
+        padding: 10px 20px;
+      }
+    }
+
+    /* Logo Row */
+    .logo-row {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .logo-row img {
+      width: 60px;
+      height: 60px;
+      animation: rotateIn 2s ease-in-out;
+    }
+
+    @keyframes rotateIn {
+      from {
+        transform: rotate(-90deg) scale(0);
+        opacity: 0;
+      }
+      to {
+        transform: rotate(0deg) scale(1);
+        opacity: 1;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="logo-row">
+      <img src="https://via.placeholder.com/60" alt="Logo 1">
+      <img src="https://via.placeholder.com/60" alt="Logo 2">
+    </div>
+    <h1 class="title">MCICTS AI</h1>
+    <p class="subtitle">Ask everything you need to know about MCICTS</p>
+    <a href="#" class="start-btn">Start Chat</a>
+  </div>
+  <script>
+    // Adding a small animation on load
+    document.addEventListener("DOMContentLoaded", () => {
+      const container = document.querySelector('.container');
+      container.style.opacity = 0;
+      container.style.transition = "opacity 2s";
+      setTimeout(() => {
+        container.style.opacity = 1;
+      }, 100);
+    });
+  </script>
+</body>
+</html>
