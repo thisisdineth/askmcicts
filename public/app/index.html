@@ -22,7 +22,7 @@
             justify-content: flex-start;
             align-items: center;
             min-height: 100vh;
-            background: linear-gradient(135deg, #1b0252, #020200);
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
             color: #fff;
             height: 100%;
         }
@@ -87,13 +87,33 @@
             padding: 12px 25px;
             background: #08223f;
             backdrop-filter: blur;
-            color: #fff;
+            color: #eaea1a;
             border: none;
             border-radius: 8px;
             font-size: 16px;
             cursor: pointer;
             transition: all 0.3s ease-in-out;
         }
+        .sample-message-container {
+        display: flex;
+        overflow-x: auto; /* Enables horizontal scrolling */
+        gap: 10px; /* Adds spacing between buttons */
+        padding: 10px; /* Adds padding around the container */
+        scroll-behavior: smooth; /* Smooth scrolling effect */
+    }
+
+    .sample-message-container::-webkit-scrollbar {
+        height: 6px; /* Set scrollbar height */
+    }
+
+    .sample-message-container::-webkit-scrollbar-thumb {
+        background: #1b0265; /* Scrollbar color */
+        border-radius: 3px;
+    }
+
+    .sample-message-container::-webkit-scrollbar-thumb:hover {
+        background: #250154; /* Scrollbar hover effect */
+    }
 
         .sample-message-container button:hover {
             background: #3e024e;
@@ -125,24 +145,30 @@
             display: flex;
             gap: 10px;
             background: none;
-            
-        }
-        input:disabled {
-    background: #e0e0e0; /* Light gray to indicate disabled state */
-    color: #8c8c8c; /* Gray text color */
-    cursor: not-allowed;
-}
 
-button:disabled {
-    background: #6c757d; /* Gray background for disabled state */
-    cursor: not-allowed;
-}
+        }
+
+        input:disabled {
+            background: #e0e0e0;
+            /* Light gray to indicate disabled state */
+            color: #8c8c8c;
+            /* Gray text color */
+            cursor: not-allowed;
+        }
 
         button:disabled {
-    background: #6c757d; /* Gray background for disabled state */
-    color: #cfcfcf; /* Lighter text color */
-    cursor: not-allowed;
-}
+            background: #6c757d;
+            /* Gray background for disabled state */
+            cursor: not-allowed;
+        }
+
+        button:disabled {
+            background: #6c757d;
+            /* Gray background for disabled state */
+            color: #eaf27eb0;
+            /* Lighter text color */
+            cursor: not-allowed;
+        }
 
         .chat-footer input {
             flex: 1;
@@ -181,12 +207,12 @@ button:disabled {
 
         .message.user .text {
             background: none;
-            color: #fff;
+            color: #fcf968ba;
         }
 
         .message.bot .text {
             background: none;
-            color: #e4dfdf;
+            color: #ffffff;
         }
 
         .message .avatar {
@@ -217,25 +243,31 @@ button:disabled {
         }
     </style>
 </head>
+
 <body>
     <div class="chat-container">
         <!-- Chat Body -->
         <div class="chat-body" id="chat-body">
             <!-- Messages will be appended here -->
         </div>
-       
+
         <!-- Sample Message Buttons -->
         <div class="sample-message-container">
             <button onclick="sendSampleMessage('What is MCICTS?')">What is MCICTS?</button>
             <button onclick="sendSampleMessage('how to join?')">How to Join?</button>
             <button onclick="sendSampleMessage('What can I do after join?')">What can I do after join?</button>
-            <button onclick="sendSampleMessage('I wanna contact someone')">I wanna contact someone?</button>
-            <button onclick="sendSampleMessage('Who is the president and members?')">Who is the president and members?</button>
-            <button onclick="sendSampleMessage('Who is the MIC ?')">Who is the MIC?</button>
+            <button onclick="sendSampleMessage('Tell me about Morning Classes')">Tell me about Morning Classes?</button>
+            <button onclick="sendSampleMessage('Upcomming Events and Compitions')">Upcomming Events and
+                Compitions?</button>
+            <button onclick="sendSampleMessage('Any update about compitions?')">Any update about compitions?</button>
+            <button onclick="sendSampleMessage('Tell me about club history?')">Tell me about club history?</button>
+            <button onclick="sendSampleMessage('Past Presidents')">Past Presidents</button>
+            <button onclick="sendSampleMessage('Top board now')">Top board now</button>
+            <button onclick="sendSampleMessage('Contact Informations')">Contact Informations</button>
         </div>
         <!-- Chat Footer -->
         <div class="chat-footer">
-            <input type="text" id="user-input" placeholder="Ask from MCICTS AI..." />
+            <input type="text" id="user-input" placeholder="Not listed above type to MCICTS AI..." />
             <button id="send-button"><i class="fa-solid fa-paper-plane"></i></button>
         </div>
 
@@ -429,47 +461,47 @@ With the newly appointed 2024/25 board, MCICTS is poised to reach new heights of
         };
 
         const disableInput = (disable) => {
-    userInput.disabled = disable; // Disable/Enable the input field
-    sendButton.disabled = disable; // Disable/Enable the send button
+            userInput.disabled = disable; // Disable/Enable the input field
+            sendButton.disabled = disable; // Disable/Enable the send button
 
-    // Handle sample message buttons
-    const sampleButtons = document.querySelectorAll('.sample-message-container button');
-    sampleButtons.forEach((button) => {
-        button.disabled = disable; // Disable/Enable sample buttons
-        button.style.cursor = disable ? "not-allowed" : "pointer";
-    });
+            // Handle sample message buttons
+            const sampleButtons = document.querySelectorAll('.sample-message-container button');
+            sampleButtons.forEach((button) => {
+                button.disabled = disable; // Disable/Enable sample buttons
+                button.style.cursor = disable ? "not-allowed" : "pointer";
+            });
 
-    // Update styles for disabled state
-    sendButton.style.cursor = disable ? "not-allowed" : "pointer";
-    userInput.style.cursor = disable ? "not-allowed" : "text";
-};
-
-
-const handleUserMessage = async () => {
-    const message = userInput.value.trim();
-    if (!message) return;
-
-    addMessage(message, "user");
-    userInput.value = "";
-
-    disableInput(true); // Disable input and sample buttons while generating response
-    addMessage("Typing...", "bot");
-
-    const botMessage = await fetchResponse(message);
-    chatBody.lastChild.remove(); // Remove typing indicator
-
-    addMessage(botMessage, "bot", true);
-
-    disableInput(false); // Re-enable input and sample buttons after response is complete
-};
+            // Update styles for disabled state
+            sendButton.style.cursor = disable ? "not-allowed" : "pointer";
+            userInput.style.cursor = disable ? "not-allowed" : "text";
+        };
 
 
+        const handleUserMessage = async () => {
+            const message = userInput.value.trim();
+            if (!message) return;
 
-const sendSampleMessage = (message) => {
-    if (sendButton.disabled) return; // Prevent sending if input is disabled
-    userInput.value = message;
-    handleUserMessage();
-};
+            addMessage(message, "user");
+            userInput.value = "";
+
+            disableInput(true); // Disable input and sample buttons while generating response
+            addMessage("Typing...", "bot");
+
+            const botMessage = await fetchResponse(message);
+            chatBody.lastChild.remove(); // Remove typing indicator
+
+            addMessage(botMessage, "bot", true);
+
+            disableInput(false); // Re-enable input and sample buttons after response is complete
+        };
+
+
+
+        const sendSampleMessage = (message) => {
+            if (sendButton.disabled) return; // Prevent sending if input is disabled
+            userInput.value = message;
+            handleUserMessage();
+        };
 
 
         sendButton.addEventListener("click", handleUserMessage);
